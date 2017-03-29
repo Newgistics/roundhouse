@@ -82,9 +82,25 @@ namespace roundhouse.infrastructure.app.logging
                 };
                 rollingFileAppender.ActivateOptions();
 
+                var rollingFileAppender3 = new RollingFileAppender
+                {
+                    Name = "roundhouse.sql.output.log.appender",
+                    File = Path.Combine(Path.GetFullPath(output_directory), "roundhouse.sql.output.log"),
+                    Layout = new PatternLayout
+                    {
+                        ConversionPattern = "%message%newline"
+                    },
+                    AppendToFile = false
+                };
+                rollingFileAppender3.ActivateOptions();
+
                 var log = LogManager.GetLogger("roundhouse");
                 var logger = (log4net.Repository.Hierarchy.Logger)log.Logger;
                 logger.AddAppender(rollingFileAppender);
+
+                log = LogManager.GetLogger("roundhouse.sql.output");
+                logger = (log4net.Repository.Hierarchy.Logger)log.Logger;
+                logger.AddAppender(rollingFileAppender3);
             
                 var nhLog = LogManager.GetLogger("NHibernate.SQL");
                 var nhLogger = (log4net.Repository.Hierarchy.Logger)nhLog.Logger;

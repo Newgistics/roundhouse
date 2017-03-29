@@ -161,7 +161,10 @@ namespace roundhouse.migrators
 
         public long version_the_database(string repository_path, string repository_version)
         {
-            Log.bound_to(this).log_an_info_event_containing(" Versioning {0} database with version {1} based on {2}.", database.database_name, repository_version, repository_path);
+            if (is_dryrun) return -1;
+            Log.bound_to(this)
+                .log_an_info_event_containing(" Versioning {0} database with version {1} based on {2}.",
+                    database.database_name, repository_version, repository_path);
             return database.insert_version_and_get_version_id(repository_path, repository_version);
         }
 
@@ -218,6 +221,7 @@ namespace roundhouse.migrators
                     else
                     {
                         Log.bound_to(this).log_a_warning_event_containing(" DryRun: {0} on {1} - {2}.", script_name, database.server_name, database.database_name);
+                        Log.bound_to(this).log_an_sql_output("/* DryRun: {0} on {1} - {2}.*/\n{3}", script_name, database.server_name, database.database_name, sql_to_run);
                     }
                 }
                 if (!is_dryrun)

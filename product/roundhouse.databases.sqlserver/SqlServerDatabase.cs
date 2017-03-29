@@ -62,7 +62,11 @@ namespace roundhouse.databases.sqlserver
 
         protected override void connection_specific_setup(IDbConnection connection)
         {
-            ((SqlConnection)connection).InfoMessage += (sender, e) => Log.bound_to(this).log_a_debug_event_containing("  [SQL PRINT]: {0}{1}", Environment.NewLine, e.Message);
+            ((SqlConnection)connection).InfoMessage += (sender, e) =>
+            {
+                Log.bound_to(this).log_an_info_event_containing("  [SQL PRINT]: {0}", e.Message);
+                Log.bound_to(this).log_an_sql_output("  [SQL PRINT]: {0}", e.Message);
+            };
         }
 
         public override void run_database_specific_tasks()

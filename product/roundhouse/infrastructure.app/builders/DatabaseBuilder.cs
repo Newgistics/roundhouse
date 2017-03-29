@@ -9,7 +9,7 @@ namespace roundhouse.infrastructure.app.builders
 
     public static class DatabaseBuilder
     {
-        private static string merge_assembly_name = "rh";
+        private static string merge_assembly_name = ", rh";
 
         public static Database build(FileSystemAccess file_system, ConfigurationPropertyHolder configuration_property_holder)
         {
@@ -17,14 +17,14 @@ namespace roundhouse.infrastructure.app.builders
 
             if (Assembly.GetExecutingAssembly().Location.Contains("roundhouse.dll"))
             {
-                merge_assembly_name = "roundhouse";
+               merge_assembly_name = "";
             }
 
             try
             {
                 string database_type = configuration_property_holder.DatabaseType;
                 database_type = database_type.Substring(0, database_type.IndexOf(','));
-                database_to_migrate = DefaultInstanceCreator.create_object_from_string_type<Database>(database_type + ", " + merge_assembly_name);
+                database_to_migrate = DefaultInstanceCreator.create_object_from_string_type<Database>(database_type + merge_assembly_name);
 
             }
             catch (NullReferenceException)

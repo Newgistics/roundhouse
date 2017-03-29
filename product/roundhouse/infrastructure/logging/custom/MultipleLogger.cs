@@ -7,10 +7,16 @@ namespace roundhouse.infrastructure.logging.custom
     public sealed class MultipleLogger : Logger
     {
         private readonly IList<Logger> the_loggers;
+        private readonly Logger sql_output_logger;
 
         public MultipleLogger(IList<Logger> loggers)
         {
             the_loggers = loggers ?? new List<Logger>();
+        }
+
+        public MultipleLogger(IList<Logger> loggers, Logger sql_output) : this(loggers)
+        {
+            this.sql_output_logger = sql_output;
         }
 
         public void log_a_debug_event_containing(string message, params object[] args)
@@ -27,6 +33,11 @@ namespace roundhouse.infrastructure.logging.custom
             {
                 logger.log_an_info_event_containing(message, args);
             }
+        }
+
+        public void log_an_sql_output(string message, params object[] args)
+        {
+            sql_output_logger.log_an_info_event_containing(message, args);
         }
 
         public void log_a_warning_event_containing(string message, params object[] args)

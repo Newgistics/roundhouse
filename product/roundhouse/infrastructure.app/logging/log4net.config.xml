@@ -39,7 +39,10 @@
     <appender-ref ref="ColoredConsoleAppender"/>
   </logger>
 
-  <logger name="roundhouse">
+  <logger name="roundhouse" >
+    <level value="INFO"/>
+  </logger>
+<logger name="roundhouse.sql.output" additivity="false"  >
     <level value="INFO"/>
   </logger>
 

@@ -163,6 +163,20 @@ namespace roundhouse.databases
         {
             using (IDbCommand command = setup_database_command(sql_to_run, connection_type, parameters))
             {
+                var sqlCommand = command as SqlCommand;
+                if (sqlCommand != null)
+                {
+                    sqlCommand.StatementCompleted +=
+                        (sender, args) =>
+                        {
+                            Log.bound_to(this)
+                            .log_an_info_event_containing("  [SQL PRINT]: {0} Row(s) affected", args.RecordCount);
+                            Log.bound_to(this)
+                                   .log_an_sql_output("[SQL PRINT]: {0} Row(s) affected", args.RecordCount);
+                        };
+                }
+
+                Log.bound_to(this).log_an_sql_output("[SQL STATEMENT]:{0}{1}", Environment.NewLine, sql_to_run);
                 command.ExecuteNonQuery();
                 command.Dispose();
             }
@@ -175,6 +189,18 @@ namespace roundhouse.databases
 
             using (IDbCommand command = setup_database_command(sql_to_run, connection_type, null))
             {
+                var sqlCommand = command as SqlCommand;
+                if (sqlCommand != null)
+                {
+                    sqlCommand.StatementCompleted += (sender, args) =>
+                    {
+                        Log.bound_to(this)
+                            .log_an_info_event_containing("  [SQL PRINT]: {0} Row(s) affected", args.RecordCount);
+                         Log.bound_to(this)
+                                .log_an_sql_output("[SQL PRINT]: {0} Row(s) affected", args.RecordCount);
+                    };
+                }
+                Log.bound_to(this).log_an_sql_output("[SQL STATEMENT]:{0}{1}", Environment.NewLine, sql_to_run);
                 return_value = command.ExecuteScalar();
                 command.Dispose();
             }

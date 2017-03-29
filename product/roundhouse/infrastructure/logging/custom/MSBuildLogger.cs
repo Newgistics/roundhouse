@@ -43,6 +43,11 @@ namespace roundhouse.infrastructure.logging.custom
                MessageImportance.Normal));
         }
 
+        public void log_an_sql_output(string message, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
         public void log_a_warning_event_containing(string message, params object[] args)
         {
             //build_engine.LogMessageEvent(new BuildMessageEventArgs(

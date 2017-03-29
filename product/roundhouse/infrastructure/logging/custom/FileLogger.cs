@@ -33,6 +33,11 @@ namespace roundhouse.infrastructure.logging.custom
             log_message("[INFO]: " + string.Format(message, args));
         }
 
+        public void log_an_sql_output(string message, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
         public void log_a_warning_event_containing(string message, params object[] args)
         {
             log_message("[WARN]: " + string.Format(message, args));

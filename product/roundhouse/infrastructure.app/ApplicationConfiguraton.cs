@@ -213,12 +213,15 @@ namespace roundhouse.infrastructure.app
             Logger log4net_logger = new Log4NetLogger(LogManager.GetLogger("roundhouse"));
             loggers.Add(log4net_logger);
 
+            Logger sql_output = new Log4NetLogger(LogManager.GetLogger("roundhouse.sql.output"));
+            
+
             if (configuration_property_holder.Logger != null && !loggers.Contains(configuration_property_holder.Logger))
             {
                 loggers.Add(configuration_property_holder.Logger);
             }
 
-            return new MultipleLogger(loggers);
+            return new MultipleLogger(loggers, sql_output);
         }
 
         private static void initialize_file_log_appender()
